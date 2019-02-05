@@ -1,0 +1,6 @@
+settings.ini
+*.db
+
+/meta/
+/wal/
+/data/
