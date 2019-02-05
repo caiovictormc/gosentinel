@@ -9,38 +9,37 @@ import (
 
 // Config is the settings.ini representation
 type Config struct {
-	deviceID string
-	broker   string
-	username string
-	password string
-	url      string
-	token    string
+	DeviceID string
+	Broker   string
+	Username string
+	Password string
+	URL      string
+	Token    string
 }
 
-func (config *Config) fill(cfgInstance *ini.File, structure map[string][]string) {
-	for section, fields := range structure {
-		for _, field := range fields {
-			if cfgInstance.Section(section).Key(field).String() == "" {
-				fmt.Printf("The field %v cann't be empty", field)
-				os.Exit(1)
-			}
-		}
+func getINIValue(cfgInstance *ini.File, section string, key string) string {
+	value := cfgInstance.Section(section).Key(key).String()
+	if value == "" {
+		fmt.Printf("The field %v cann't be empty", key)
+		os.Exit(1)
 	}
+	return value
+}
+
+func (config *Config) fill(cfgInstance *ini.File) {
+	config.DeviceID = getINIValue(cfgInstance, "device", "device_id")
+	config.Broker = getINIValue(cfgInstance, "mqtt", "broker")
+	config.Username = getINIValue(cfgInstance, "mqtt", "username")
+	config.Password = getINIValue(cfgInstance, "mqtt", "password")
+	config.URL = getINIValue(cfgInstance, "api", "url")
+	config.Token = getINIValue(cfgInstance, "api", "token")
 }
 
 // LoadConfig returns a Config struct
 func LoadConfig(path string) Config {
-	structure := map[string][]string{
-		"device": []string{"device_id"},
-		"mqtt":   []string{"broker", "username", "password"},
-		"api":    []string{"url", "token"},
-	}
-
 	cfgInstance := loadFile(path)
 
 	var cfg Config
-	fmt.Println(cfg)
-	cfg.fill(cfgInstance, structure)
-	fmt.Println(cfg)
+	cfg.fill(cfgInstance)
 	return cfg
 }
