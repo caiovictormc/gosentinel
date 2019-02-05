@@ -15,6 +15,7 @@ type Config struct {
 	Password string
 	URL      string
 	Token    string
+	Topic    string
 }
 
 func getINIValue(cfgInstance *ini.File, section string, key string) string {
@@ -29,6 +30,7 @@ func getINIValue(cfgInstance *ini.File, section string, key string) string {
 func (config *Config) fill(cfgInstance *ini.File) {
 	config.DeviceID = getINIValue(cfgInstance, "device", "device_id")
 	config.Broker = getINIValue(cfgInstance, "mqtt", "broker")
+	config.Topic = getINIValue(cfgInstance, "mqtt", "topic")
 	config.Username = getINIValue(cfgInstance, "mqtt", "username")
 	config.Password = getINIValue(cfgInstance, "mqtt", "password")
 	config.URL = getINIValue(cfgInstance, "api", "url")
