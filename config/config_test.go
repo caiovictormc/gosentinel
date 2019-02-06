@@ -10,8 +10,6 @@ import (
 
 const (
 	_CONFIG_INI_FILE = "testdata/settings.test.ini"
-	failMark         = "\u2717"
-	checkMark        = "\u2713"
 )
 
 func checkField(
